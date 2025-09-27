@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="data/browsersupport.js"></script>
+    <link rel="apple-touch-icon-precomposed" href="data/apple-touch-icon.png"/>
+	<link rel="shortcut icon" type="image/ico" href="data/favicon.ico"/>
+    <title>JNCIA-Junos Study Guide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #005580;
+            --secondary: #0088cc;
+            --light: #f0f8ff;
+            --dark: #00334d;
+            --accent: #ff6600;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab:hover {
+            background-color: var(--light);
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid var(--accent);
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        h3 {
+            color: var(--secondary);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        .card {
+            background: var(--light);
+            border-left: 4px solid var(--secondary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .command-list {
+            list-style-type: none;
+        }
+        
+        .command-list li {
+            background: white;
+            margin: 0.5rem 0;
+            padding: 0.8rem 1rem;
+            border-radius: 4px;
+            border-left: 3px solid var(--accent);
+            font-family: monospace;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        th, td {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .diagram-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 2rem 0;
+        }
+        
+        .flowchart-step {
+            background: var(--light);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            width: 80%;
+            text-align: center;
+            border: 2px solid var(--secondary);
+            position: relative;
+        }
+        
+        .flowchart-step:not(:last-child):after {
+            content: "↓";
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .quiz-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .quiz-question {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .quiz-options {
+            list-style-type: none;
+            margin: 1rem 0;
+        }
+        
+        .quiz-options li {
+            margin: 0.5rem 0;
+            padding: 0.8rem;
+            background: #f9f9f9;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .quiz-options li:hover {
+            background: #e9e9e9;
+        }
+        
+        .quiz-options li.selected {
+            background: #d4edda;
+            border-left: 3px solid #28a745;
+        }
+        
+        .quiz-options li.correct {
+            background: #d4edda;
+            border-left: 3px solid #28a745;
+        }
+        
+        .quiz-options li.incorrect {
+            background: #f8d7da;
+            border-left: 3px solid #dc3545;
+        }
+        
+        .quiz-feedback {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .quiz-feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        
+        .quiz-feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+        
+        .btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+            margin-top: 1rem;
+        }
+        
+        .btn:hover {
+            background: #e55a00;
+        }
+        
+        .comparison-table {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-col {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .comparison-table {
+                flex-direction: column;
+            }
+            
+            .flowchart-step {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>JNCIA-Junos Certification Study Guide</h1>
+        <p class="subtitle">Comprehensive reference for Juniper Networks Certified Associate - Junos certification</p>
+    </header>
+    
+    <div class="container">
+        <div class="nav-tabs">
+            <div class="tab active" data-tab="fundamentals">Junos Fundamentals</div>
+            <div class="tab" data-tab="configuration">Configuration Basics</div>
+            <div class="tab" data-tab="interfaces">User Interfaces</div>
+            <div class="tab" data-tab="monitoring">Monitoring & Maintenance</div>
+            <div class="tab" data-tab="routing">Routing Fundamentals</div>
+            <div class="tab" data-tab="networking">Networking Fundamentals</div>
+            <div class="tab" data-tab="firewall">Junos Firewall</div>
+            <div class="tab" data-tab="quiz">Practice Quiz</div>
+            <div class="tab" data-tab="complete-quiz"><a href="quiz.html">Complete Quiz</a></div>
+        </div>
+        
+        <!-- Junos Fundamentals Tab -->
+        <div id="fundamentals" class="tab-content active">
+            <h2>Junos OS Fundamentals</h2>
+            
+            <div class="card">
+                <h3>Control Plane vs Data Plane</h3>
+                <p>Junos OS maintains a strict separation between control and data planes:</p>
+                
+                <div class="comparison-table">
+                    <div class="comparison-col">
+                        <h4>Control Plane (Routing Engine)</h4>
+                        <ul>
+                            <li>Manages routing protocols and system configuration</li>
+                            <li>Runs routing protocols daemon (rpd)</li>
+                            <li>Processes management traffic</li>
+                            <li>Maintains routing tables</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-col">
+                        <h4>Data Plane (Packet Forwarding Engine)</h4>
+                        <ul>
+                            <li>Handles packet forwarding at high speeds</li>
+                            <li>Uses forwarding tables from RE</li>
+                            <li>Processes transit traffic</li>
+                            <li>Implemented in ASICs for performance</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Key Daemons</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Daemon</th>
+                        <th>Function</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>rpd (Routing Protocol Daemon)</td>
+                        <td>Manages routing protocols (OSPF, BGP, IS-IS, RIP)</td>
+                    </tr>
+                    <tr>
+                        <td>mgd (Management Daemon)</td>
+                        <td>Handles CLI and user management sessions</td>
+                    </tr>
+                    <tr>
+                        <td>chassisd (Chassis Daemon)</td>
+                        <td>Manages hardware components and status</td>
+                    </tr>
+                    <tr>
+                        <td>dfwd (Firewall Daemon)</td>
+                        <td>Processes firewall filters and security policies</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>CLI Prompts</h3>
+            <ul class="command-list">
+                <li>Superuser prompt: <code>username@hostname#</code></li>
+                <li>Operational mode: <code>username@hostname></code></li>
+                <li>Configuration mode: <code>username@hostname# edit</code> (shows [edit] in prompt)</li>
+            </ul>
+        </div>
+        
+        <!-- Configuration Basics Tab -->
+        <div id="configuration" class="tab-content">
+            <h2>Configuration Basics</h2>
+            
+            <div class="card">
+                <h3>Configuration Management</h3>
+                <p>Junos uses a candidate configuration model where changes must be committed to take effect.</p>
+                
+                <div class="diagram-container">
+                    <h3>Configuration Workflow</h3>
+                    <div class="flowchart">
+                        <div class="flowchart-step">Enter Configuration Mode<br><code>configure</code></div>
+                        <div class="flowchart-step">Make Configuration Changes</div>
+                        <div class="flowchart-step">Validate Configuration<br><code>commit check</code></div>
+                        <div class="flowchart-step">Commit Configuration<br><code>commit</code></div>
+                        <div class="flowchart-step">Configuration Active</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Configuration Files</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>File</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>juniper.conf.gz</td>
+                        <td>Active running configuration</td>
+                    </tr>
+                    <tr>
+                        <td>rescue.conf.gz</td>
+                        <td>Rescue configuration for recovery</td>
+                    </tr>
+                    <tr>
+                        <td>rollback files (0-49)</td>
+                        <td>Previous configurations (rollback 0 = active)</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Essential Configuration Commands</h3>
+            <ul class="command-list">
+                <li><code>configure</code> - Enter configuration mode</li>
+                <li><code>commit</code> - Apply candidate configuration</li>
+                <li><code>rollback n</code> - Load previous configuration (n=0-49)</li>
+                <li><code>load merge</code> - Add configuration from file</li>
+                <li><code>load override</code> - Replace candidate configuration</li>
+                <li><code>save &lt;filename&gt;</code> - Save candidate to file</li>
+                <li><code>request system configuration rescue save</code> - Save rescue config</li>
+                <li><code>request system zeroize</code> - Factory reset device</li>
+            </ul>
+        </div>
+        
+        <!-- User Interfaces Tab -->
+        <div id="interfaces" class="tab-content">
+            <h2>User Interfaces</h2>
+            
+            <div class="comparison-table">
+                <div class="comparison-col">
+                    <h3>CLI (Command Line Interface)</h3>
+                    <ul>
+                        <li>Primary management method</li>
+                        <li>Hierarchical structure</li>
+                        <li>Tab key for auto-completion</li>
+                        <li>Extensive help system (<code>?</code>)</li>
+                        <li>Operational and configuration modes</li>
+                    </ul>
+                </div>
+                <div class="comparison-col">
+                    <h3>J-Web (Web Interface)</h3>
+                    <ul>
+                        <li>Graphical user interface</li>
+                        <li>Point-and-click configuration</li>
+                        <li>Real-time monitoring</li>
+                        <li>Useful for beginners</li>
+                    </ul>
+                </div>
+                <div class="comparison-col">
+                    <h3>NETCONF (XML-based API)</h3>
+                    <ul>
+                        <li>Programmatic interface</li>
+                        <li>XML-based configuration</li>
+                        <li>SSH transport (port 830)</li>
+                        <li>Automation-friendly</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>CLI Tips and Tricks</h3>
+                <ul>
+                    <li>Use <code>show configuration | display set</code> to output configuration as set commands</li>
+                    <li>Pipe commands with <code>|</code> for filtering (e.g., <code>show interfaces | match up</code>)</li>
+                    <li>Use <code>run</code> command to execute operational commands from configuration mode</li>
+                    <li>Save time with command abbreviations (e.g., <code>sh int</code> for <code>show interfaces</code>)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Monitoring & Maintenance Tab -->
+        <div id="monitoring" class="tab-content">
+            <h2>Monitoring & Maintenance</h2>
+            
+            <h3>Interface Monitoring Commands</h3>
+            <ul class="command-list">
+                <li><code>show interfaces terse</code> - Brief interface status</li>
+                <li><code>show interfaces extensive</code> - Detailed interface statistics</li>
+                <li><code>monitor interface &lt;interface-name&gt;</code> - Real-time interface monitoring</li>
+            </ul>
+            
+            <h3>System Monitoring Commands</h3>
+            <ul class="command-list">
+                <li><code>show system alarms</code> - Check for hardware/software issues</li>
+                <li><code>show chassis hardware</code> - View hardware inventory</li>
+                <li><code>show system processes</code> - Monitor system processes</li>
+                <li><code>show system storage</code> - Check storage utilization</li>
+            </ul>
+            
+            <h3>Troubleshooting Commands</h3>
+            <ul class="command-list">
+                <li><code>clear arp</code> - Clear ARP cache</li>
+                <li><code>ping &lt;destination&gt;</code> - Test connectivity</li>
+                <li><code>traceroute &lt;destination&gt;</code> - Trace network path</li>
+                <li><code>test ping &lt;source&gt; &lt;destination&gt;</code> - Ping from specific source</li>
+                <li><code>request support information</code> - Collect troubleshooting data</li>
+            </ul>
+            
+            <div class="card">
+                <h3>Common Monitoring Scenarios</h3>
+                <p><strong>Interface Issues:</strong> Use <code>show interfaces extensive</code> to check for errors, drops, and flapping.</p>
+                <p><strong>Routing Problems:</strong> Use <code>show route</code> and <code>show route protocol &lt;protocol&gt;</code> to verify routes.</p>
+                <p><strong>Hardware Problems:</strong> Use <code>show chassis hardware</code> and <code>show system alarms</code> to identify issues.</p>
+            </div>
+        </div>
+        
+        <!-- Routing Fundamentals Tab -->
+        <div id="routing" class="tab-content">
+            <h2>Routing Fundamentals</h2>
+            
+            <h3>Routing Tables</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Table</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>inet.0</td>
+                        <td>IPv4 unicast routes</td>
+                    </tr>
+                    <tr>
+                        <td>inet6.0</td>
+                        <td>IPv6 unicast routes</td>
+                    </tr>
+                    <tr>
+                        <td>inet.1</td>
+                        <td>IPv4 multicast routes</td>
+                    </tr>
+                    <tr>
+                        <td>mpls.0</td>
+                        <td>MPLS label switching information</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Default Route Preferences</h3>
+            <p>Lower values are more preferred:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Route Type</th>
+                        <th>Preference</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Directly connected</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>Static</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td>OSPF internal</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td>IS-IS Level 1</td>
+                        <td>15</td>
+                    </tr>
+                    <tr>
+                        <td>IS-IS Level 2</td>
+                        <td>18</td>
+                    </tr>
+                    <tr>
+                        <td>RIP</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>OSPF external</td>
+                        <td>150</td>
+                    </tr>
+                    <tr>
+                        <td>BGP</td>
+                        <td>170</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Routing Protocol Types</h3>
+            <div class="comparison-table">
+                <div class="comparison-col">
+                    <h4>Distance-Vector (RIP)</h4>
+                    <ul>
+                        <li>Uses hop count as metric</li>
+                        <li>Periodic full routing table updates</li>
+                        <li>Simple but less efficient</li>
+                        <li>Maximum 15 hops</li>
+                    </ul>
+                </div>
+                <div class="comparison-col">
+                    <h4>Link-State (OSPF, IS-IS)</h4>
+                    <ul>
+                        <li>Uses SPF/Dijkstra algorithm</li>
+                        <li>Event-triggered updates</li>
+                        <li>Faster convergence</li>
+                        <li>More complex but scalable</li>
+                    </ul>
+                </div>
+                <div class="comparison-col">
+                    <h4>Path-Vector (BGP)</h4>
+                    <ul>
+                        <li>Uses path attributes for decision</li>
+                        <li>Policy-based routing</li>
+                        <li>Used for inter-domain routing</li>
+                        <li>TCP-based (port 179)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h3>Routing Policy Actions</h3>
+            <ul class="command-list">
+                <li><code>accept</code> - Allow route to be used/exported</li>
+                <li><code>reject</code> - Deny route from being used/exported</li>
+            </ul>
+        </div>
+        
+        <!-- Networking Fundamentals Tab -->
+        <div id="networking" class="tab-content">
+            <h2>Networking Fundamentals</h2>
+            
+            <h3>IPv4 Addressing</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>CIDR</th>
+                        <th>Subnet Mask</th>
+                        <th>Usable Hosts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>/24</td>
+                        <td>255.255.255.0</td>
+                        <td>254</td>
+                    </tr>
+                    <tr>
+                        <td>/26</td>
+                        <td>255.255.255.192</td>
+                        <td>62</td>
+                    </tr>
+                    <tr>
+                        <td>/28</td>
+                        <td>255.255.255.240</td>
+                        <td>14</td>
+                    </tr>
+                    <tr>
+                        <td>/30</td>
+                        <td>255.255.255.252</td>
+                        <td>2</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>IPv4 Special Address Ranges</h3>
+            <ul class="command-list">
+                <li>Loopback: <code>127.0.0.0/8</code></li>
+                <li>Private Ranges:
+                    <ul>
+                        <li><code>10.0.0.0/8</code></li>
+                        <li><code>172.16.0.0/12</code></li>
+                        <li><code>192.168.0.0/16</code></li>
+                    </ul>
+                </li>
+                <li>Multicast: <code>224.0.0.0 - 239.255.255.255</code></li>
+                <li>APIPA (Link-local): <code>169.254.0.0/16</code></li>
+            </ul>
+            
+            <h3>IPv6 Addressing</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Address Type</th>
+                        <th>Prefix</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Link-local</td>
+                        <td>FE80::/10</td>
+                        <td>Local network communication</td>
+                    </tr>
+                    <tr>
+                        <td>Unique local</td>
+                        <td>FC00::/7</td>
+                        <td>Private addressing (similar to IPv4 private)</td>
+                    </tr>
+                    <tr>
+                        <td>Global unicast</td>
+                        <td>2000::/3</td>
+                        <td>Public Internet addresses</td>
+                    </tr>
+                    <tr>
+                        <td>Multicast</td>
+                        <td>FF00::/8</td>
+                        <td>Multicast communications</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="card">
+                <h3>OSI Model Reference</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Layer</th>
+                            <th>Name</th>
+                            <th>Function</th>
+                            <th>Examples</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>L1</td>
+                            <td>Physical</td>
+                            <td>Physical connection</td>
+                            <td>Cables, connectors</td>
+                        </tr>
+                        <tr>
+                            <td>L2</td>
+                            <td>Data Link</td>
+                            <td>Frame delivery</td>
+                            <td>MAC addresses, switches</td>
+                        </tr>
+                        <tr>
+                            <td>L3</td>
+                            <td>Network</td>
+                            <td>Logical addressing</td>
+                            <td>IP addresses, routers</td>
+                        </tr>
+                        <tr>
+                            <td>L4</td>
+                            <td>Transport</td>
+                            <td>End-to-end delivery</td>
+                            <td>TCP, UDP</td>
+                        </tr>
+                        <tr>
+                            <td>L7</td>
+                            <td>Application</td>
+                            <td>Network services</td>
+                            <td>HTTP, DNS, SSH</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3>Transport Protocols</h3>
+            <div class="comparison-table">
+                <div class="comparison-col">
+                    <h4>TCP (Transmission Control Protocol)</h4>
+                    <ul>
+                        <li>Connection-oriented</li>
+                        <li>Reliable, in-order delivery</li>
+                        <li>Flow control and congestion control</li>
+                        <li>Examples: HTTP, HTTPS, SSH, FTP</li>
+                    </ul>
+                </div>
+                <div class="comparison-col">
+                    <h4>UDP (User Datagram Protocol)</h4>
+                    <ul>
+                        <li>Connectionless</li>
+                        <li>Faster, no guarantee of delivery</li>
+                        <li>No flow or congestion control</li>
+                        <li>Examples: DNS, VoIP, video streaming</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Junos Firewall Tab -->
+        <div id="firewall" class="tab-content">
+            <h2>Junos Firewall Cheatsheet</h2>
+            
+            <div class="card">
+                <h3>Firewall Filter Overview</h3>
+                <p>Junos firewall filters are stateless packet filters that can be applied to:</p>
+                <ul>
+                    <li>Interfaces (input/output)</li>
+                    <li>Loopback interface (for control plane protection)</li>
+                    <li>Specific routing instances</li>
+                </ul>
+            </div>
+            
+            <h3>Firewall Filter Structure</h3>
+            <ul class="command-list">
+                <li><code>set firewall family inet filter FILTER_NAME term TERM_NAME from &lt;match-conditions&gt;</code></li>
+                <li><code>set firewall family inet filter FILTER_NAME term TERM_NAME then &lt;action&gt;</code></li>
+                <li><code>set interfaces &lt;interface-name&gt; unit &lt;unit-number&gt; family inet filter input FILTER_NAME</code></li>
+            </ul>
+            
+            <h3>Common Match Conditions</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Match Condition</th>
+                        <th>Syntax Example</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Source/Destination IP</td>
+                        <td><code>source-address 192.168.1.0/24</code></td>
+                        <td>Matches source IP range</td>
+                    </tr>
+                    <tr>
+                        <td>Protocol</td>
+                        <td><code>protocol tcp</code></td>
+                        <td>Matches TCP packets</td>
+                    </tr>
+                    <tr>
+                        <td>Port</td>
+                        <td><code>destination-port 22</code></td>
+                        <td>Matches destination port</td>
+                    </tr>
+                    <tr>
+                        <td>ICMP Type</td>
+                        <td><code>icmp-type echo-request</code></td>
+                        <td>Matches ping requests</td>
+                    </tr>
+                    <tr>
+                        <td>TCP Flags</td>
+                        <td><code>tcp-flags "(syn &amp; !ack)"</code></td>
+                        <td>Matches TCP SYN packets</td>
+                    </tr>
+                    <tr>
+                        <td>Interface</td>
+                        <td><code>interface ge-0/0/0.0</code></td>
+                        <td>Matches packets on specific interface</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Firewall Actions</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Syntax</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Accept</td>
+                        <td><code>then accept</code></td>
+                        <td>Allow packet to pass through</td>
+                    </tr>
+                    <tr>
+                        <td>Discard</td>
+                        <td><code>then discard</code></td>
+                        <td>Silently drop packet</td>
+                    </tr>
+                    <tr>
+                        <td>Reject</td>
+                        <td><code>then reject</code></td>
+                        <td>Drop packet and send ICMP unreachable</td>
+                    </tr>
+                    <tr>
+                        <td>Count</td>
+                        <td><code>then count COUNTER_NAME</code></td>
+                        <td>Count matching packets</td>
+                    </tr>
+                    <tr>
+                        <td>Log</td>
+                        <td><code>then log</code></td>
+                        <td>Log matching packets</td>
+                    </tr>
+                    <tr>
+                        <td>Syslog</td>
+                        <td><code>then syslog</code></td>
+                        <td>Send matching packets to syslog</td>
+                    </tr>
+                    <tr>
+                        <td>Next Term</td>
+                        <td><code>then next term</code></td>
+                        <td>Continue to next term in filter</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Firewall Filter Examples</h3>
+            
+            <div class="card">
+                <h4>Basic SSH Filter (Allow SSH from specific network)</h4>
+                <ul class="command-list">
+                    <li><code>set firewall family inet filter SSH-FILTER term ALLOW-SSH from source-address 10.1.1.0/24</code></li>
+                    <li><code>set firewall family inet filter SSH-FILTER term ALLOW-SSH from protocol tcp</code></li>
+                    <li><code>set firewall family inet filter SSH-FILTER term ALLOW-SSH from destination-port 22</code></li>
+                    <li><code>set firewall family inet filter SSH-FILTER term ALLOW-SSH then accept</code></li>
+                    <li><code>set firewall family inet filter SSH-FILTER term DENY-ALL then discard</code></li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h4>ICMP Filter (Allow ping but not other ICMP)</h4>
+                <ul class="command-list">
+                    <li><code>set firewall family inet filter ICMP-FILTER term ALLOW-PING from protocol icmp</code></li>
+                    <li><code>set firewall family inet filter ICMP-FILTER term ALLOW-PING from icmp-type echo-request</code></li>
+                    <li><code>set firewall family inet filter ICMP-FILTER term ALLOW-PING then accept</code></li>
+                    <li><code>set firewall family inet filter ICMP-FILTER term DENY-OTHER-ICMP from protocol icmp</code></li>
+                    <li><code>set firewall family inet filter ICMP-FILTER term DENY-OTHER-ICMP then discard</code></li>
+                    <li><code>set firewall family inet filter ICMP-FILTER term ALLOW-OTHER then accept</code></li>
+                </ul>
+            </div>
+            
+            <h3>Policers and Rate Limiting</h3>
+            <p>Policers allow you to rate-limit traffic:</p>
+            <ul class="command-list">
+                <li><code>set firewall policer LIMIT-1M if-exceeding bandwidth-limit 1m</code></li>
+                <li><code>set firewall policer LIMIT-1M if-exceeding burst-size-limit 100k</code></li>
+                <li><code>set firewall policer LIMIT-1M then discard</code></li>
+                <li><code>set firewall filter MY-FILTER term LIMIT-TRAFFIC then policer LIMIT-1M</code></li>
+            </ul>
+            
+            <h3>Monitoring Firewall Filters</h3>
+            <ul class="command-list">
+                <li><code>show firewall</code> - Show firewall filter statistics</li>
+                <li><code>show firewall filter FILTER_NAME</code> - Show specific filter stats</li>
+                <li><code>show firewall log</code> - Show firewall log entries</li>
+                <li><code>clear firewall filter FILTER_NAME</code> - Clear filter counters</li>
+                <li><code>monitor traffic interface &lt;interface-name&gt;</code> - Real-time traffic monitoring</li>
+            </ul>
+            
+            <div class="card">
+                <h3>Best Practices</h3>
+                <ul>
+                    <li>Always include an explicit default action (accept or discard) as the last term</li>
+                    <li>Order terms from most specific to most general</li>
+                    <li>Use meaningful term names for easier troubleshooting</li>
+                    <li>Test filters with <code>commit confirmed</code> to avoid locking yourself out</li>
+                    <li>Use counters and logging during implementation for verification</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Practice Quiz Tab -->
+        <div id="quiz" class="tab-content">
+            <h2>Practice Quiz</h2>
+            
+            <div class="quiz-container">
+                <div class="quiz-question">
+                    <h3>Question 1: What is the default route preference for OSPF internal routes?</h3>
+                    <ul class="quiz-options">
+                        <li data-correct="false">5</li>
+                        <li data-correct="true">10</li>
+                        <li data-correct="false">100</li>
+                        <li data-correct="false">150</li>
+                    </ul>
+                    <div class="quiz-feedback"></div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>Question 2: Which command shows a brief summary of interface status?</h3>
+                    <ul class="quiz-options">
+                        <li data-correct="false"><code>show interfaces extensive</code></li>
+                        <li data-correct="true"><code>show interfaces terse</code></li>
+                        <li data-correct="false"><code>show interfaces detail</code></li>
+                        <li data-correct="false"><code>show interface status</code></li>
+                    </ul>
+                    <div class="quiz-feedback"></div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>Question 3: What is the purpose of the 'commit confirmed' command?</h3>
+                    <ul class="quiz-options">
+                        <li data-correct="false">To permanently save the configuration</li>
+                        <li data-correct="true">To automatically rollback if not confirmed within a timeout</li>
+                        <li data-correct="false">To validate the configuration syntax</li>
+                        <li data-correct="false">To commit only a portion of the configuration</li>
+                    </ul>
+                    <div class="quiz-feedback"></div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>Question 4: Which IPv6 address type is used for local network communication?</h3>
+                    <ul class="quiz-options">
+                        <li data-correct="false">Global unicast</li>
+                        <li data-correct="true">Link-local</li>
+                        <li data-correct="false">Unique local</li>
+                        <li data-correct="false">Multicast</li>
+                    </ul>
+                    <div class="quiz-feedback"></div>
+                </div>
+                
+                <div class="quiz-question">
+                    <h3>Question 5: In a firewall filter, what action silently drops a packet?</h3>
+                    <ul class="quiz-options">
+                        <li data-correct="false"><code>then reject</code></li>
+                        <li data-correct="true"><code>then discard</code></li>
+                        <li data-correct="false"><code>then deny</code></li>
+                        <li data-correct="false"><code>then drop</code></li>
+                    </ul>
+                    <div class="quiz-feedback"></div>
+                </div>
+                
+                <button class="btn" id="check-answers">Check Answers</button>
+                <button class="btn" id="reset-quiz">Reset Quiz</button>
+            </div>
+        </div>
+        
+        <!-- Complete Quiz Tab -->
+        <div id="complete-quiz" class="tab-content">
+            <h2>Complete Quiz</h2>
+            <p>For a more comprehensive quiz with multiple question types, visit our dedicated quiz page:</p>
+            <a href="quiz.html" class="btn">Take Complete Quiz</a>
+        </div>
+    </div>
+    
+    <footer>
+        <p>JNCIA-Junos Study Guide &copy; 2023 | Created for JNCIA Certification Preparation</p>
+        <p>This is an unofficial study guide and is not affiliated with Juniper Networks.</p>
+    </footer>
+    
+    <script>
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Skip if it's the complete quiz tab with link
+                if (tab.querySelector('a')) return;
+                
+                // Remove active class from all tabs and contents
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Quiz functionality
+        document.querySelectorAll('.quiz-options li').forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selected class from all options in this question
+                this.parentElement.querySelectorAll('li').forEach(li => {
+                    li.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+            });
+        });
+        
+        document.getElementById('check-answers').addEventListener('click', function() {
+            document.querySelectorAll('.quiz-question').forEach(question => {
+                const selectedOption = question.querySelector('.quiz-options li.selected');
+                const feedback = question.querySelector('.quiz-feedback');
+                
+                if (selectedOption) {
+                    if (selectedOption.getAttribute('data-correct') === 'true') {
+                        feedback.textContent = 'Correct!';
+                        feedback.classList.add('correct');
+                        feedback.classList.remove('incorrect');
+                    } else {
+                        feedback.textContent = 'Incorrect. Try again!';
+                        feedback.classList.add('incorrect');
+                        feedback.classList.remove('correct');
+                    }
+                } else {
+                    feedback.textContent = 'Please select an answer.';
+                    feedback.classList.add('incorrect');
+                    feedback.classList.remove('correct');
+                }
+            });
+        });
+        
+        document.getElementById('reset-quiz').addEventListener('click', function() {
+            document.querySelectorAll('.quiz-options li').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            document.querySelectorAll('.quiz-feedback').forEach(feedback => {
+                feedback.textContent = '';
+                feedback.classList.remove('correct', 'incorrect');
+            });
+        });
+    </script>
+</body>
+</html>
